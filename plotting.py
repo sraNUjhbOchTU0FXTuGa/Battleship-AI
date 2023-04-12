@@ -5,15 +5,15 @@ from collections import Counter
 from statistics import median
 
 
-def combine_guesses():
+def combine_guesses(strategy, threads):
     all_guesses = []
-    for i in range(5):
-        FileStore = open(f"stored_objects/guesses_{i}.pickle", "rb")
+    for i in range(threads):
+        FileStore = open(f"stored_objects/{strategy}.{i}.pickle", "rb")
         guesses = pickle.load(FileStore)
         FileStore.close()
         all_guesses.extend(guesses)
 
-    FileStore = open(f"stored_objects/ht_min_parity_guesses_final.pickle", "wb")
+    FileStore = open(f"stored_objects/{strategy}.pickle", "wb")
     pickle.dump(all_guesses, FileStore)
     FileStore.close()
 
@@ -46,14 +46,19 @@ def plot_all_cdfs(file_names, display_names):
         FileStore = open(f"stored_objects/{filename}.pickle", "rb")
         guesses = pickle.load(FileStore)
         FileStore.close()
-        sns.kdeplot(data=[0] + guesses + [100], cumulative=True, clip=(0, 101), label=display_name)
+        sns.kdeplot(data=guesses, cumulative=True, clip=(0, 101), label=display_name)
     plt.xlabel("Number of Guesses")
     plt.legend(loc="upper left")
 
 
-file_names = ["random_guesses_final", "ht_guesses_final", "ht_min_parity_guesses_final", "prob_guesses_final"]
-display_names = ["Random", "Hunt / Target", "Hunt / Target Minimum", "Probabilistic"]
-num = 4
-plot_all_games(file_names[:num], display_names[:num])
-# plot_all_cdfs(file_names[:num], display_names[:num])
+#file_names = ["random", "hunt_target", "hunt_target_parity", "hunt_target_min_parity", "prob", "weighted_prob"]
+#display_names = ["Random", "Hunt / Target", "Hunt / Target with Parity", "Hunt / Target with Minimum Length Parity", "Probabilistic", "Weighted Probabilistic"]
+file_names = ["prob", "weighted_prob"]
+display_names = ["Probabilistic", "Weighted Probabilistic"]
+num = 6
+#for strategy in file_names:
+#    combine_guesses(strategy, 6)
+
+#plot_all_games(file_names[:num], display_names[:num])
+plot_all_cdfs(file_names[:num], display_names[:num])
 plt.show()
