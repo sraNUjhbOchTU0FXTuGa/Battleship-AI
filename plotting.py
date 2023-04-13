@@ -1,8 +1,9 @@
+from itertools import accumulate
 import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import Counter
-from statistics import median
+import statistics as stats
 
 
 def combine_guesses(strategy, threads):
@@ -50,29 +51,53 @@ def plot_all_cdfs(file_names, display_names):
 	plt.xlabel("Number of Guesses")
 	plt.legend(loc="upper left")
 
+def read_pickle_file(filename):
+	fs = open(f"{filename}", "rb")
+	retval = pickle.load(fs)
+	fs.close()
+	return retval
+
 def plot_differences():
-	FileStore = open(f"stored_objects/prob.pickle", "rb")
-	prob = pickle.load(FileStore)
-	FileStore.close()
-	FileStore = open(f"stored_objects/weighted_prob.pickle", "rb")
-	w_prob = pickle.load(FileStore)
-	FileStore.close()
-	prob.sort()
-	w_prob.sort()
-	print(w_prob[1])
+	results = {}
+	accumulator = {}
+	for filename, display_name in zip(file_names, display_names):
+		results[display_name] = temp = read_pickle_file(f"stored_objects/{filename}.pickle")
+		accumulator[display_name] = temp2 = [0]*101
+		#for i in range(101):
+		#	temp2[i] = 0
+		for i in temp:
+			temp2[i] += 1
+	#for i in temp2:
+		print(temp2)
+		#print("mean ", stats.mean(guesses))
+		#print("geometric_mean ", stats.geometric_mean(guesses))
+		#print("median ", stats.median(guesses))
+		#print("mode ", stats.mode(guesses))
+		#print("multimode ", stats.multimode(guesses))
+		#print("quantiles ", stats.quantiles(guesses))
+		#print("pstdev ", stats.pstdev(guesses))
+		#print("pvariance ", stats.pvariance(guesses))
+		#print("stdev ", stats.stdev(guesses))
+		#print("variance ", stats.variance(guesses))
+		#print("Max", max(guesses))
+		#print("Min", min(guesses))
+	#print(results["Weighted Probabilistic"][0] - results["Probabilistic"][0])
 
 
-#file_names = ["random", "hunt_target", "hunt_target_parity", "hunt_target_min_parity", "prob", "weighted_prob"]
-#display_names = ["Random", "Hunt / Target", "Hunt / Target with Parity", "Hunt / Target with Minimum Length Parity", "Probabilistic", "Weighted Probabilistic"]
-file_names = ["prob", "weighted_prob"]
-display_names = ["Probabilistic", "Weighted Probabilistic"]
-num = 6
+file_names = ["random", "hunt_target", "hunt_target_parity", "hunt_target_min_parity", "prob", "weighted_prob", "minsize_prob"]
+display_names = ["Random", "Hunt / Target", "Hunt / Target with Parity", "Hunt / Target with Minimum Length Parity", "Probabilistic", "Weighted Probabilistic", "Minimum Size Probabalistic"]
+#file_names = ["minsize_prob"]
+#display_names = ["Minimum Size Probabalistic"]
+
+#file_names = ["prob", "weighted_prob"]
+#display_names = ["Probabilistic", "Weighted Probabilistic"]
+num = 7
 #for strategy in file_names:
-#    combine_guesses(strategy, 6)
+#    combine_guesses(strategy, num)
 
-#plot_all_games(file_names[:num], display_names[:num])
-#plot_all_cdfs(file_names[:num], display_names[:num])
-plot_differences()
+#plot_all_games(file_names, display_names)
+plot_all_cdfs(file_names[:num], display_names[:num])
+#plot_differences()
 
 
 #plt.show()
