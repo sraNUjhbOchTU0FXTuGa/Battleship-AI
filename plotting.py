@@ -69,18 +69,14 @@ def plot_differences():
 			temp2[i] += 1
 	#for i in temp2:
 		print(temp2)
-		#print("mean ", stats.mean(guesses))
-		#print("geometric_mean ", stats.geometric_mean(guesses))
-		#print("median ", stats.median(guesses))
-		#print("mode ", stats.mode(guesses))
-		#print("multimode ", stats.multimode(guesses))
-		#print("quantiles ", stats.quantiles(guesses))
-		#print("pstdev ", stats.pstdev(guesses))
-		#print("pvariance ", stats.pvariance(guesses))
-		#print("stdev ", stats.stdev(guesses))
-		#print("variance ", stats.variance(guesses))
-		#print("Max", max(guesses))
-		#print("Min", min(guesses))
+		print("mean ", stats.mean(temp))
+		print("geometric_mean ", stats.geometric_mean(temp))
+		print("median ", stats.median(temp))
+		print("mode ", stats.mode(temp))
+		print("stdev ", stats.stdev(temp))
+		print("variance ", stats.variance(temp))
+		print("Max", max(temp))
+		print("Min", min(temp))
 	#print(results["Weighted Probabilistic"][0] - results["Probabilistic"][0])
 
 
@@ -96,8 +92,8 @@ num = 7
 #    combine_guesses(strategy, num)
 
 #plot_all_games(file_names, display_names)
-plot_all_cdfs(file_names[:num], display_names[:num])
-#plot_differences()
+#plot_all_cdfs(file_names, display_names)
+plot_differences()
 
 
-#plt.show()
+plt.show()
